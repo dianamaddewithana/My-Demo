@@ -30,8 +30,14 @@ jobs:
     - name: Generate Allure Report
       if: always()
       run: |
+        echo "Contents of target/allure-results:"
+        ls -la target/allure-results/ || echo "No allure-results directory found"
+        echo ""
+        echo "Generating Allure report..."
         allure generate target/allure-results -o target/allure-report --clean 2>&1 || true
-        if [ -f target/allure-report/index.html ]; then echo "Report generated successfully"; else echo "Warning: index.html not found"; fi
+        echo ""
+        echo "Contents of target/allure-report:"
+        ls -la target/allure-report/ || echo "No allure-report directory found"
 
     - name: Upload TestNG results
       if: always()
