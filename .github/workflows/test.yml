@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Tests with Allure Report
 
 on:
   push:
@@ -23,6 +23,16 @@ jobs:
     - name: Run tests with Maven
       run: mvn clean test
 
+    - name: Download Allure CLI
+      run: |
+        npm install -g allure-commandline
+
+    - name: Generate Allure Report
+      if: always()
+      run: |
+        mkdir -p target/allure-report
+        allure generate target/allure-results -o target/allure-report --clean
+
     - name: Upload TestNG results
       if: always()
       uses: actions/upload-artifact@v4
@@ -36,3 +46,18 @@ jobs:
       with:
         name: allure-results
         path: target/allure-results/
+
+    - name: Upload Allure report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-report
+        path: target/allure-report/
+
+    - name: Deploy Allure Report to GitHub Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: target/allure-report
+
