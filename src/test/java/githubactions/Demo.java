@@ -87,7 +87,7 @@ public class Demo {
     public void tearDown(ITestResult result) {
         if (!result.isSuccess() && driver != null) {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            Allure.addAttachment("Failure screenshot", new ByteArrayInputStream(screenshot), "image/png", "png");
+            Allure.addAttachment("Failure screenshot", "image/png", new ByteArrayInputStream(screenshot), "png");
         }
 
         if (driver != null) {
