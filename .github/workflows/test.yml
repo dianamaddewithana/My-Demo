@@ -25,13 +25,13 @@ jobs:
 
     - name: Download Allure CLI
       run: |
-        npm install -g allure-commandline
+        npm install -g allure-commandline@latest
 
     - name: Generate Allure Report
       if: always()
       run: |
-        mkdir -p target/allure-report
-        allure generate target/allure-results -o target/allure-report --clean
+        allure generate target/allure-results -o target/allure-report --clean 2>&1 || true
+        if [ -f target/allure-report/index.html ]; then echo "Report generated successfully"; else echo "Warning: index.html not found"; fi
 
     - name: Upload TestNG results
       if: always()
